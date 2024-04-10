@@ -1,5 +1,4 @@
-from django.shortcuts import render
-from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 from todos.models import Todo
 from todos.serializers import TodoSerializer
@@ -13,6 +12,16 @@ class TodosApiView(ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
+
+
+class TodoDetailApiView(RetrieveUpdateDestroyAPIView):
+    serializer_class = TodoSerializer
+    permission_classes = (IsAuthenticated,)
+    lookup_field = 'id'
+
+    def get_queryset(self):
+        return Todo.objects.filter(owner=self.request.user)
+      
 
 
 # class CreateTodoApiView(CreateAPIView):

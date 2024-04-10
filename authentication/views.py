@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from django.contrib.auth import authenticate
 from rest_framework.generics import GenericAPIView
 from rest_framework import response, status, permissions
